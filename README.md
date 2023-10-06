@@ -275,15 +275,103 @@ OUTPUT:
 RESULT: Round Robin (RR) Scheduling is implemented successfully.
 
 
-AIM: To implement Priority Preemptive Scheduling
+AIM: To implement Priority Preemptive Schedulin
 
+
+
+AIM:
+
+To implement Priority Preemptive Scheduling
 ALGORITHM:
 
+Initialize the necessary variables and data structures, including the struct Process represent each process.Read the number of processes (n) from the userCreate an array of struct Process to store information for each process.Input process information for each process, including arrival time, burst time, and priority. Store this information in the struct Process array.Initialize the current time (time) to 0 and the completed process count (completed) to 0.Display the Gantt Chart header.
 
+Enter the main scheduling loop that continues until all processes have completed execution (completed equals n).Inside the loop,find the highest priority process that has arrived (arrival_time <= time) and has remaining burst time (remaining_time > 0).If a process with the highest priority is found, execute it for 1 unit of time by decrementing its remaining_time and updating the Gantt Chart.If the process has completed its execution (remaining_time becomes 0), increment the completed process count.
+
+If no process is available to run at the current time, display a message indicating that no process is running at that time.Repeat the loop until all processes are completed.Display the scheduling results, including the Gantt Chart, process ID, and execution time for each process.
 PROGRAM:
 
+#include<stdio.h>
+int main()
+{
+int i,n,pid[10],at[10],srt[10],st[10],ft[10],wt[10],tt[10],pri[10];
+int timer,totalsrt,tempsrt[10],minsrt,minpos; static int iscompleted[10],isstarted[10];
+float rr[10],awt,atat;
+printf("\n\t PRIORITY PRE-EMPTIVE\n\t ********************");
+printf("\nENTER THE NO.OF PROCESSES TO BE EXECUTED\n");
+scanf("%d",&n);
+printf("ENTER THE PROCESSES ID,ARRIVAL TIME,BURST TIME AND PRIORITY \n");
+for(i=0;i<n;i++)
+scanf("%d %d %d %d",&pid[i],&at[i],&srt[i],&pri[i]);
+
+totalsrt=0;
+for(i=0;i<n;i++)
+{
+totalsrt=totalsrt+srt[i];
+tempsrt[i]=srt[i];
+}
+timer=0;
+while(timer<totalsrt)
+{
+minsrt=100;
+minpos=0;
+for(i=0;i<n;i++)
+{
+if(at[i]<=timer && iscompleted[i]==0)
+{
+if(minsrt>pri[i])
+{
+minsrt=pri[i];
+minpos=i;
+}
+}
+}
+i=minpos;
+if(isstarted[i]==0)
+{
+st[i]=timer;
+wt[i]=st[i]-at[i];
+isstarted[i]=1;
+}
+srt[i]=srt[i]-1;
+timer=timer+1;
+if(srt[i]==0)
+{
+ft[i]=timer;
+wt[i]=wt[i]+(ft[i]-(st[i]+tempsrt[i]));
+tt[i]=wt[i]+tempsrt[i];
+rr[i]=tt[i]/tempsrt[i];
+iscompleted[i]=1;
+}
+}
+printf("\n\t CPU SCHEDULING ALGORITHM\n\t ************************");
+printf("\n\t PRIORITY PRE-EMPTIVE\n\t ********************");
+printf("\n--------------------------------------------------");
+printf("\nPID AT SRT ST FT WT TT RR PRIORITY\n");
+printf("--------------------------------------------------\n");
+for(i=0;i<n;i++)
+{
+printf("%2d %2d %2d ",pid[i],at[i],tempsrt[i]);
+printf("%2d %2d %2d %2d %2.2f %3d\n",st[i],ft[i],wt[i],tt[i],rr[i],pri[i]);
+
+}
+printf("--------------------------------------------------\n");
+for(i=0;i<n;i++)
+{
+awt=awt+wt[i];
+atat=atat+tt[i];
+}
+atat=atat/n;
+awt=awt/n;
+printf("The average waiting time is: %5.2f\n",awt);
+printf("The average turn around time is: %5.2f",atat);
+}
 
 OUTPUT:
+
+5
+RESULT:
+Priority Preemptive scheduling is implemented successfully.
 
 
 RESULT: Priority Preemptive scheduling is implemented successfully.
